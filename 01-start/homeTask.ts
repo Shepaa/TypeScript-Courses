@@ -1,5 +1,5 @@
 class School {
-    directions = [];
+    directions: any = [];
 
     addDirection(direction: string):void {
         this.directions.push(direction);
@@ -7,7 +7,7 @@ class School {
 }
 
 class Direction {
-    levels = [];
+    levels: any = [];
     private readonly _name: string
 
     constructor(name: string) {
@@ -49,7 +49,7 @@ class Level {
 }
 
 class Group {
-    _students = [];
+    _students: any = [];
     directionName: string
     levelName: number;
 
@@ -74,7 +74,7 @@ class Group {
 
 class Student {
     grades: any = {};
-    attendance = [];
+    attendance: any = [];
     firstName: string;
     lastName: string;
     birthYear: number;
