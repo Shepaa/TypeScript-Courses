@@ -1,7 +1,7 @@
 class School {
     directions: any = [];
 
-    addDirection(direction: string):void {
+    addDirection(direction: string): void {
         this.directions.push(direction);
     }
 }
@@ -19,7 +19,7 @@ class Direction {
         return this._name;
     }
 
-    addLevel(level: number): void {
+    addLevel(level: any): void {
         this.levels.push(level);
     }
 }
@@ -27,7 +27,7 @@ class Direction {
 class Level {
     groups: any = [];
     private readonly _name: string;
-    private readonly _program: string;
+    private readonly _program: any;
 
     constructor(name: string, program: string) {
         this._name = name;
@@ -42,8 +42,7 @@ class Level {
         return this._program;
     }
 
-
-    addGroup(group: string): void {
+    addGroup(group: any): void {
         this.groups.push(group);
     }
 }
@@ -58,12 +57,12 @@ class Group {
         this.levelName = levelName;
     }
 
-    get students() {
+    get students(): any {
         return this._students;
     }
 
 
-    addStudent(student: string): void  {
+    addStudent(student: any): void {
         this._students.push(student);
     }
 
@@ -97,24 +96,24 @@ class Student {
         return new Date().getFullYear() - this.birthYear;
     }
 
-    setGrade(subject: string, grade: number): void {
+    setGrade(subject: any, grade: any): void {
         this.grades[subject] = grade;
     }
 
-    markAttendance(present: string): void {
+    markAttendance(present: boolean): void {
         this.attendance.push(present);
     }
 
     getPerformanceRating(): number {
-        const gradeValues = Object().values(this.grades);
+        const gradeValues: any = Object().values(this.grades);
 
         if (gradeValues.length === 0) return 0;
 
-        const averageGrade =
+        const averageGrade: number =
             gradeValues.reduce((sum: number, grade: number) => sum + grade, 0) / gradeValues.length;
 
-        const attendancePercentage =
-            (this.attendance.filter((present) => present).length /
+        const attendancePercentage: number =
+            (this.attendance.filter((present: any) => present.length) /
                 this.attendance.length) *
             100;
 
