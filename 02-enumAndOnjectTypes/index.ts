@@ -157,6 +157,7 @@ class Group {
 Array.prototype.toSorted = function <T>(compareFn: (a: T, b: T) => number): T[] {
     return this.slice().sort(compareFn);
 };
+
 interface Array<T> {
     toSorted(compareFn: (a: T, b: T) => number): T[];
 }
@@ -197,7 +198,7 @@ class Student {
     }
 
     getPerformanceRating(): number {
-        const gradeValues: number[] = Object.values(this._grades);
+        const gradeValues: number[] = Object().values(this._grades);
 
         if (!gradeValues.length) return 0;
 
