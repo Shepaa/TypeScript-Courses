@@ -164,7 +164,6 @@ interface Array<T> {
 
 
 class Student {
-    // implement 'set grade' and 'set visit' methods
     _firstName: string;
     _lastName: string;
     _birthYear: number;
