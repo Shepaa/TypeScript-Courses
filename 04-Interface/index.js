@@ -27,3 +27,17 @@ function calculate(calc, action, operandA, operandB) {
     }
 }
 console.log(calculate(calcObj, 'add', 2, 2));
+var bookService = {
+    getBookName: function (book) {
+        return book.bookName;
+    },
+    getAuthorFullName: function (book) {
+        return book.authorName;
+    },
+    getReleaseYear: function (book) {
+        return book.releaseYear;
+    },
+    getFullBookInformation: function (book) {
+        return "".concat(book.authorName, " it's the Author of the book ").concat(book.bookName, " was release at ").concat(book.releaseYear, " ");
+    }
+};
