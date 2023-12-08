@@ -45,34 +45,42 @@ interface IAuthor {
     authorName?: string
 }
 
-interface IBook extends IAuthor {
+interface IBook  {
     bookName?: string
     releaseYear?: number
+    author: IAuthor
 }
 
-interface IBookService extends IBook {
-    getAuthorFullName(book: IBook): string;
-
-    getBookName(book: IBook): string
-
-    getReleaseYear(book: IBook): number
-
-    getFullBookInformation(book: IBook): string
+interface IBookService {
+    getAuthorFullName(): string;
+    getBookName(): string;
+    getReleaseYear(): number;
+    getFullBookInformation(): string | number;
 }
 
+const book: IBook = {
+    bookName: 'Sample Book',
+    releaseYear: 2023,
+    author: {
+        authorName: 'John Doe',
+    },
+}
 
 const bookService: IBookService = {
-    getBookName(book: IBook): string {
-        return book.bookName
+    getAuthorFullName(): string {
+        return book.author.authorName;
     },
-    getAuthorFullName(book: IBook): string {
-        return book.authorName
+
+    getBookName(): string {
+        return book.bookName;
     },
-    getReleaseYear(book: IBook): number {
-        return book.releaseYear
+
+    getReleaseYear(): number {
+        return book.releaseYear;
     },
-    getFullBookInformation(book: IBook): string  {
-        return `${book.authorName} it's the Author of the book ${book.bookName} was release at ${book.releaseYear} `
-    }
-}
+
+    getFullBookInformation(): string | number {
+        return `${this.getBookName()} by ${this.getAuthorFullName()}, released in ${this.getReleaseYear()}`;
+    },
+};
 
