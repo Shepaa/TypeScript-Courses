@@ -8,7 +8,7 @@ interface ISecondInterface {
 
 
 interface ArrayLikeObject {
-    [index: number]: number;
+    [index: number]: any;
 
     length: number;
 }
