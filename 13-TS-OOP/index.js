@@ -15,17 +15,25 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var Note = /** @class */ (function () {
     function Note(id, title, content) {
-        this.id = id;
+        this._id = id;
         this.title = title;
         this.status = false;
         this.content = content;
         this.creationDate = new Date();
         this.modificationDate = new Date();
     }
-    Note.prototype.editNote = function (title, content) {
-        this.title = title;
-        this.content = content;
-        this.modificationDate = new Date();
+    Object.defineProperty(Note.prototype, "id", {
+        get: function () {
+            return this._id;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Note.prototype.update = function (todo) {
+        Object.assign(this, todo);
+    };
+    Note.prototype.toggleStatus = function () {
+        this.status = !this.status;
     };
     return Note;
 }());
@@ -34,10 +42,10 @@ var ConfirmNote = /** @class */ (function (_super) {
     function ConfirmNote() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    ConfirmNote.prototype.editNote = function (title, content) {
+    ConfirmNote.prototype.update = function (todo) {
         var isConfirm = confirm("Are u sure that u need edit this note?");
         if (isConfirm) {
-            _super.prototype.editNote.call(this, title, content);
+            _super.prototype.update.call(this, todo);
         }
         else {
             console.log("Confirming cancel");
@@ -65,30 +73,50 @@ var TodoList = /** @class */ (function () {
             throw new Error("Todo list are empty");
         return this.todos;
     };
-    TodoList.prototype.editTodo = function (id, title, content) {
-        if (this.todos.length === 0)
-            throw new Error("Todo list are empty");
-        if (id > 0)
-            throw new Error("negative id can't be");
-        var todoIndex = this.todos.findIndex(function (note) { return note.id === id; });
-        this.todos[todoIndex].title = title;
-        this.todos[todoIndex].content = content;
-        this.todos[todoIndex].modificationDate = new Date();
+    TodoList.prototype.editTodo = function (id, payload) {
+        var todo = this.todos.find(function (todo) { return todo.id === id; });
+        if (!todo)
+            throw new Error("incorrect id");
+        todo.update(payload);
     };
     TodoList.prototype.toggleStatus = function (id) {
-        if (id > 0)
+        if (id === -1)
             throw new Error("negative id can't be");
-        var todoIndex = this.todos.findIndex(function (note) { return note.id === id; });
-        this.todos[todoIndex].status = !this.todos[todoIndex].status;
+        var todoIndex = this.todos.find(function (note) { return note.id === id; });
+        console.log(todoIndex);
     };
     TodoList.prototype.searchBy = function (conditions) {
         return this.todos.sort(function (a, b) { return (a[conditions] > b[conditions] ? 1 : -1); });
     };
     return TodoList;
 }());
+var TodoListSort = /** @class */ (function () {
+    function TodoListSort(todos) {
+        this.todos = [];
+        this.todos = todos;
+    }
+    TodoListSort.prototype.sortBy = function (field) {
+        return this.todos.sort(function (a, b) { return (a[field] > b[field] ? 1 : -1); });
+    };
+    return TodoListSort;
+}());
+var TodoListSearch = /** @class */ (function () {
+    function TodoListSearch(todos) {
+        this.todos = [];
+        this.todos = todos;
+    }
+    TodoListSearch.prototype.searchByField = function (field, value) {
+        return this.todos.filter(function (todo) { return todo[field] === value; });
+    };
+    return TodoListSearch;
+}());
 var todoList = new TodoList();
 var defaultNote = new Note(1, "Usual note", "Usual note content");
 var confirmNote = new ConfirmNote(2, "", "");
+var sortList = new TodoListSort(todoList.getTodoList());
+var sortedResult = sortList.sortBy("creationDate");
+var searchList = new TodoListSearch(todoList.getTodoList());
+var searchResult = searchList.searchByField("title", "Usual note");
 todoList.addTodo(defaultNote);
+todoList.changeStatus(1);
 todoList.addTodo(confirmNote);
-console.log(todoList.getTodoList());

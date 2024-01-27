@@ -6,7 +6,7 @@ class Note {
     modificationDate: Date
     readonly creationDate: Date
 
-    get id(){
+    get id() {
         return this._id
     }
 
@@ -19,19 +19,21 @@ class Note {
         this.modificationDate = new Date();
     }
 
-    editNote(title: string, content: string): void {
-        this.title = title;
-        this.content = content;
-        this.modificationDate = new Date();
+    update(todo: Note): void {
+        Object.assign(this, todo)
+    }
+
+    toggleStatus() {
+        this.status = !this.status
     }
 }
 
 
 class ConfirmNote extends Note {
-    override editNote(title: string, content: string) {
+    override update(todo: Note) {
         const isConfirm = confirm("Are u sure that u need edit this note?")
         if (isConfirm) {
-            super.editNote(title, content);
+            super.update(todo);
         } else {
             console.log("Confirming cancel")
         }
@@ -52,30 +54,26 @@ class TodoList {
     }
 
     public getTodoById(id: number) {
-        if (this.todos.length === 0) throw new Error("Todo list are empty");
         return this.todos.find(todo => todo.id === id)
     }
 
     public getTodoList(): Note[] {
-        if (this.todos.length === 0) throw new Error("Todo list are empty");
         return this.todos
     }
 
-    editTodo(id: number, title: string, content: string) {
-        if (this.todos.length === 0) throw new Error("Todo list are empty");
-        if (id == -1) throw new Error("negative id can't be");
+    editTodo(id: number, payload: Note) {
+        const todo = this.todos.find(todo => todo.id === id)
+        if (!todo) throw new Error("incorrect id");
 
-        const todoIndex = this.todos.findIndex((note) => note.id === id);
+        todo.update(payload)
 
-        this.todos[todoIndex].title = title;
-        this.todos[todoIndex].content = content;
-        this.todos[todoIndex].modificationDate = new Date();
     }
 
-    toggleStatus(id: number) {
-        if (id == -1) throw new Error("negative id can't be");
-        const todoIndex = this.todos.findIndex((note) => note.id === id);
-        this.todos[todoIndex].status = !this.todos[todoIndex].status
+    changeStatus(id: number) {
+        const todo = this.todos.find((note) => note.id === id)
+        if (!todo) throw new Error("incorrect id");
+
+        todo.toggleStatus()
     }
 
     searchBy(conditions: keyof Note) {
@@ -115,9 +113,10 @@ const sortedResult = sortList.sortBy("creationDate");
 const searchList = new TodoListSearch(todoList.getTodoList());
 const searchResult = searchList.searchByField("title", "Usual note");
 
-console.log(searchResult);
-console.log(sortedResult);
+
 todoList.addTodo(defaultNote)
-todoList.addTodo(confirmNote)
-console.log(todoList.getTodoList())
+console.log(todoList.getTodoList());
+todoList.changeStatus(1)
+console.log(todoList.getTodoList());
+
 
