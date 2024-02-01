@@ -5,7 +5,6 @@ class BankAccount {
     private readonly _currency: string
     private balance = 0
 
-    // private readonly holder: IBankClient,
     constructor(currency: string) {
         this._currency = currency
         this.iban = 'UA1234554312'
@@ -32,6 +31,7 @@ class BankAccount {
 class Bank {
     private static instance: Bank | null
     private accounts: Map<string, BankAccount[]> = new Map()
+
     private constructor() {
     }
 
